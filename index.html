@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111827">
+    <title>Duelo de Treino</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="game-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">ARCADE • LUTA 2D</p>
+          <h1>Duelo de Treino</h1>
+        </div>
+        <button id="restart-button" class="restart-button" type="button">Reiniciar luta</button>
+      </header>
+
+      <section class="mode-controls" aria-label="Modo de jogo">
+        <label for="game-mode">
+          Modo
+          <select id="game-mode">
+            <option value="bot">Contra o bot</option>
+            <option value="pvp">Jogador contra jogador</option>
+          </select>
+        </label>
+        <label id="difficulty-field" for="game-difficulty">
+          Dificuldade
+          <select id="game-difficulty">
+            <option value="easy">Fácil</option>
+            <option value="medium" selected>Médio</option>
+            <option value="hard">Difícil</option>
+          </select>
+        </label>
+        <label for="arena-select">
+          Arena
+          <select id="arena-select">
+            <option value="training-gym">Academia de treino</option>
+            <option value="brasilia">Brasília</option>
+            <option value="basketball">Quadra de basquete</option>
+            <option value="tea-room">Salão de chá</option>
+            <option value="nuclear-prop">Ao lado de uma bomba cenográfica</option>
+            <option value="three-powers">Praça dos Três Poderes</option>
+            <option value="amazon">Floresta Amazônica</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="character-select" aria-label="Seleção de lutadores">
+        <div class="character-select__heading">
+          <p class="eyebrow">SELEÇÃO DE LUTADORES</p>
+        </div>
+        <div class="character-select__player">
+          <label for="player-character">Jogador 1</label>
+          <select id="player-character">
+            <option value="kim">Kim Jong-un</option>
+            <option value="trump">Trump</option>
+            <option value="bolsonaro">Bolsonaro</option>
+            <option value="lula">Lula</option>
+            <option value="obama">Obama</option>
+            <option value="putin">Putin</option>
+            <option value="getulio">Getúlio Vargas</option>
+            <option value="jk">JK</option>
+            <option value="queen-elizabeth">Rainha Elizabeth</option>
+            <option value="gandhi">Mahatma Gandhi</option>
+            <option value="churchill">Winston Churchill</option>
+            <option value="mandela">Nelson Mandela</option>
+            <option value="chavez">Hugo Chávez</option>
+          </select>
+          <div class="selection-preview">
+            <span id="player-preview-swatch" class="selection-preview__swatch" aria-hidden="true"></span>
+            <div>
+              <strong id="player-preview-name">Kim Jong-un</strong>
+              <small id="player-preview-super">SUPER: sirene + mini cogumelo de fumaça</small>
+            </div>
+          </div>
+        </div>
+        <span class="versus-mark" aria-hidden="true">VS</span>
+        <div class="character-select__player">
+          <label id="opponent-label" for="opponent-character">Adversário</label>
+          <select id="opponent-character">
+            <option value="training-dummy">Alvo de treino</option>
+            <option value="kim">Kim Jong-un</option>
+            <option value="trump">Trump</option>
+            <option value="bolsonaro">Bolsonaro</option>
+            <option value="lula">Lula</option>
+            <option value="obama">Obama</option>
+            <option value="putin">Putin</option>
+            <option value="getulio">Getúlio Vargas</option>
+            <option value="jk">JK</option>
+            <option value="queen-elizabeth">Rainha Elizabeth</option>
+            <option value="gandhi">Mahatma Gandhi</option>
+            <option value="churchill">Winston Churchill</option>
+            <option value="mandela">Nelson Mandela</option>
+            <option value="chavez">Hugo Chávez</option>
+          </select>
+          <div class="selection-preview">
+            <span id="opponent-preview-swatch" class="selection-preview__swatch" aria-hidden="true"></span>
+            <div>
+              <strong id="opponent-preview-name">Alvo de treino</strong>
+              <small id="opponent-preview-super">Adversário de prática</small>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="arena" aria-label="Arena de luta">
+        <div class="fighter-info fighter-info--left">
+          <span id="player-display-name" class="fighter-name">Kim Jong-un</span>
+          <div class="health-track" aria-label="Energia de Kim Jong-un">
+            <div id="player-health" class="health-fill"></div>
+          </div>
+          <div class="meter-track" aria-label="Medidor de super">
+            <div id="player-meter" class="meter-fill"></div>
+          </div>
+          <span id="player-super-caption" class="meter-caption">SUPER: sirene + mini cogumelo de fumaça</span>
+        </div>
+        <div class="fight-status">
+          <div id="timer" class="timer">60</div>
+          <div id="status-message" class="status-message" aria-live="polite">A luta vai começar!</div>
+        </div>
+        <div class="fighter-info fighter-info--right">
+          <span id="opponent-display-name" class="fighter-name">Alvo de treino</span>
+          <div class="health-track" aria-label="Energia do alvo de treino">
+            <div id="opponent-health" class="health-fill health-fill--opponent"></div>
+          </div>
+          <div class="meter-track" aria-label="Medidor de super do adversário">
+            <div id="opponent-meter" class="meter-fill meter-fill--opponent"></div>
+          </div>
+          <span id="opponent-super-caption" class="meter-caption">Adversário de prática</span>
+        </div>
+        <canvas id="arena-canvas" width="960" height="540" aria-label="Arena de luta entre os personagens selecionados"></canvas>
+      </section>
+
+      <section class="controls" aria-label="Controles do jogo">
+        <div class="control-copy">
+          <h2>Controles</h2>
+          <p><kbd>←</kbd> <kbd>→</kbd> mover <span class="separator">·</span> <kbd>↑</kbd> pular</p>
+          <p><kbd>A</kbd> golpe <span class="separator">·</span> <kbd>S</kbd> golpe forte <span class="separator">·</span> <kbd>D</kbd> defender <span class="separator">·</span> <kbd>F</kbd> super</p>
+          <p id="player-two-controls" hidden>Jogador 2: <kbd>J</kbd>/<kbd>L</kbd> mover, <kbd>I</kbd> pular, <kbd>U</kbd> golpe, <kbd>O</kbd> golpe forte, <kbd>P</kbd> defender, <kbd>;</kbd> super</p>
+        </div>
+        <div class="touch-controls" aria-label="Controles por toque">
+          <div class="touch-group">
+            <button type="button" data-control="left" aria-label="Mover para a esquerda">←</button>
+            <button type="button" data-control="right" aria-label="Mover para a direita">→</button>
+            <button type="button" data-control="jump" aria-label="Pular">↑</button>
+          </div>
+          <div class="touch-group">
+            <button type="button" data-control="light" aria-label="Golpe">A</button>
+            <button type="button" data-control="heavy" aria-label="Golpe forte">S</button>
+            <button type="button" data-control="block" aria-label="Defender">D</button>
+            <button type="button" data-control="super" aria-label="Usar super">F</button>
+          </div>
+        </div>
+      </section>
+
+      <footer class="game-note">
+        Luta e finalizações cartunescas, sem ferimentos gráficos. As cenas especiais
+        aparecem apenas nos confrontos aprovados.
+      </footer>
+    </main>
+    <script src="game.js"></script>
+  </body>
+</html>

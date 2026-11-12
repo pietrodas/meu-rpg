@@ -1,0 +1,488 @@
+:root {
+  color-scheme: dark;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #0b1020;
+  color: #f7f7fb;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 50% 0, rgb(55 65 112 / 28%), transparent 58%),
+    #0b1020;
+}
+
+button {
+  font: inherit;
+}
+
+button:focus-visible,
+select:focus-visible {
+  outline: 2px solid #f4cf77;
+  outline-offset: 3px;
+}
+
+select {
+  font: inherit;
+}
+
+.game-shell {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 32px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  color: #a4b1d5;
+  font: 500 11px Consolas, monospace;
+  letter-spacing: 0.18em;
+}
+
+h1,
+h2,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0;
+  font-size: clamp(24px, 4vw, 36px);
+  letter-spacing: -0.04em;
+}
+
+.restart-button,
+.touch-group button {
+  border: 1px solid #49546f;
+  border-radius: 8px;
+  background: #202a42;
+  color: #fff;
+  cursor: pointer;
+  transition: background 120ms ease, transform 120ms ease;
+}
+
+.restart-button {
+  padding: 10px 15px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.restart-button:hover,
+.touch-group button:hover {
+  background: #303e5e;
+}
+
+.restart-button:active,
+.touch-group button:active {
+  transform: translateY(1px);
+}
+
+.mode-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.mode-controls label {
+  display: grid;
+  gap: 5px;
+  color: #b6c0d8;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.mode-controls select {
+  min-width: 154px;
+  padding: 7px 9px;
+  border: 1px solid #49546f;
+  border-radius: 6px;
+  background: #202a42;
+  color: #fff;
+  font-size: 13px;
+  text-transform: none;
+}
+
+.character-select {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr);
+  align-items: end;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding: 14px 16px;
+  border: 1px solid #37425d;
+  border-radius: 12px;
+  background:
+    linear-gradient(110deg, rgb(220 112 86 / 10%), transparent 48%, rgb(92 154 225 / 10%)),
+    #131b2d;
+}
+
+.character-select__heading {
+  grid-column: 1 / -1;
+}
+
+.character-select__heading .eyebrow {
+  margin-bottom: 0;
+}
+
+.character-select__player {
+  display: grid;
+  gap: 5px;
+}
+
+.character-select__player label {
+  color: #b6c0d8;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.character-select__player select {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid #49546f;
+  border-radius: 7px;
+  background: #202a42;
+  color: #fff;
+  font-weight: 700;
+}
+
+.selection-preview {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 6px 8px;
+  border-left: 3px solid var(--fighter-color, #8290ad);
+  border-radius: 0 6px 6px 0;
+  background: rgb(7 10 18 / 28%);
+}
+
+.selection-preview__swatch {
+  width: 25px;
+  height: 29px;
+  flex: 0 0 auto;
+  border: 2px solid rgb(255 255 255 / 70%);
+  border-radius: 5px 5px 3px 3px;
+  background: var(--fighter-color, #8290ad);
+  box-shadow: inset 0 -7px rgb(0 0 0 / 15%);
+  image-rendering: pixelated;
+}
+
+.selection-preview strong,
+.selection-preview small {
+  display: block;
+}
+
+.selection-preview strong {
+  color: #fff;
+  font-size: 11px;
+}
+
+.selection-preview small {
+  overflow: hidden;
+  margin-top: 2px;
+  color: #aeb9d1;
+  font-size: 9px;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  text-overflow: ellipsis;
+}
+
+.versus-mark {
+  align-self: center;
+  color: #f4cf77;
+  font: 800 17px Consolas, monospace;
+  text-align: center;
+}
+
+.arena {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #37425d;
+  border-radius: 14px;
+  background: #141c30;
+  box-shadow: 0 24px 80px rgb(0 0 0 / 35%);
+}
+
+#arena-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+
+.fighter-info {
+  position: absolute;
+  z-index: 1;
+  top: 20px;
+  width: 37%;
+  padding: 9px 11px;
+  border: 1px solid rgb(255 255 255 / 24%);
+  border-radius: 9px;
+  background: rgb(9 14 27 / 68%);
+  box-shadow: 0 6px 18px rgb(0 0 0 / 24%);
+  text-shadow: 0 2px 6px #000;
+  backdrop-filter: blur(4px);
+}
+
+.fighter-info--left {
+  left: 3%;
+}
+
+.fighter-info--right {
+  right: 3%;
+  text-align: right;
+}
+
+.fighter-select-label {
+  display: block;
+  margin-bottom: 3px;
+  color: #b6c0d8;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.fighter-name {
+  display: block;
+  margin-bottom: 7px;
+  color: #fff;
+  font-size: clamp(12px, 2vw, 19px);
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.health-track,
+.meter-track {
+  height: 13px;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 55%);
+  border-radius: 4px;
+  background: rgb(7 10 18 / 72%);
+}
+
+.health-track {
+  padding: 2px;
+}
+
+.health-fill,
+.meter-fill {
+  height: 100%;
+  transition: width 150ms linear;
+}
+
+.health-fill {
+  width: 100%;
+  background: linear-gradient(90deg, #f8b94f, #f36f4a);
+}
+
+.health-fill--opponent {
+  margin-left: auto;
+  background: linear-gradient(90deg, #63d8d2, #6ea7ff);
+}
+
+.meter-track {
+  width: 58%;
+  height: 7px;
+  margin-top: 5px;
+  border-color: rgb(255 255 255 / 35%);
+}
+
+.fighter-info--right .meter-track {
+  margin-left: auto;
+}
+
+.meter-fill {
+  width: 0;
+  background: #ffd76f;
+}
+
+.meter-fill--opponent {
+  margin-left: auto;
+  background: #91e2d9;
+}
+
+.meter-caption {
+  display: block;
+  margin-top: 5px;
+  color: #d6d9e7;
+  font-size: clamp(8px, 1.15vw, 11px);
+}
+
+.fight-status {
+  position: absolute;
+  z-index: 2;
+  top: 18px;
+  left: 50%;
+  width: 19%;
+  padding: 7px 10px 8px;
+  border: 1px solid rgb(255 255 255 / 22%);
+  border-radius: 11px;
+  background: rgb(9 14 27 / 78%);
+  box-shadow: 0 6px 18px rgb(0 0 0 / 24%);
+  text-align: center;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.timer {
+  color: #ffe28c;
+  font: 800 clamp(20px, 3vw, 28px) Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 14px rgb(244 207 119 / 35%);
+}
+
+.status-message {
+  min-height: 18px;
+  margin-top: 4px;
+  color: #ffe28c;
+  font-size: clamp(9px, 1.2vw, 12px);
+  font-weight: 700;
+  text-shadow: 0 2px 6px #000;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 18px;
+  padding: 15px 18px;
+  border: 1px solid #29334b;
+  border-radius: 12px;
+  background: #131b2d;
+}
+
+.control-copy h2 {
+  margin-bottom: 8px;
+  color: #f4cf77;
+  font-size: 14px;
+}
+
+.control-copy p {
+  margin-bottom: 4px;
+  color: #c6ccdb;
+  font-size: 12px;
+}
+
+kbd {
+  display: inline-block;
+  min-width: 20px;
+  padding: 2px 5px;
+  border: 1px solid #53607b;
+  border-radius: 4px;
+  background: #202a42;
+  color: #fff;
+  font: 11px Consolas, monospace;
+  text-align: center;
+}
+
+.separator {
+  padding: 0 5px;
+  color: #7e8ba8;
+}
+
+.touch-controls,
+.touch-group {
+  display: flex;
+  gap: 6px;
+}
+
+.touch-controls {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.touch-group button {
+  width: 42px;
+  height: 42px;
+  touch-action: none;
+  font-weight: 700;
+}
+
+.game-note {
+  margin-top: 12px;
+  color: #929cb3;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+@media (max-width: 680px) {
+  .game-shell {
+    width: min(100% - 20px, 600px);
+    padding-top: 16px;
+  }
+
+  .topbar {
+    margin-bottom: 12px;
+  }
+
+  .character-select {
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .character-select__player select {
+    min-width: 0;
+    font-size: 12px;
+  }
+
+  .arena {
+    border-radius: 9px;
+  }
+
+  .fighter-info {
+    top: 3%;
+  }
+
+  .fight-status {
+    top: 3%;
+  }
+
+  .controls {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 13px;
+  }
+
+  .touch-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .touch-group button {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
