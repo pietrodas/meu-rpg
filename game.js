@@ -264,6 +264,112 @@
     }
   }
 
+  function shadePixelColor(color, amount) {
+    const value = Number.parseInt(color.slice(1), 16);
+    const channels = [16, 8, 0].map((shift) =>
+      Math.max(0, Math.min(255, Math.round(((value >> shift) & 255) * amount)))
+    );
+    return `#${channels.map((channel) => channel.toString(16).padStart(2, "0")).join("")}`;
+  }
+
+  function drawPixelFinish(fighter) {
+    const shade = shadePixelColor(fighter.color, 0.62);
+    const light = shadePixelColor(fighter.color, 1.28);
+    const trimLight = shadePixelColor(fighter.trim, 1.18);
+    const skin = {
+      kim: "#d0a47e",
+      trump: "#e1b284",
+      bolsonaro: "#d8a57e",
+      lula: "#d0a47e",
+      obama: "#704c3e",
+      putin: "#d0a47e",
+      getulio: "#d0a47e",
+      jk: "#d0a47e",
+      "queen-elizabeth": "#efd0ae",
+      gandhi: "#b89470",
+      churchill: "#d0a47e",
+      mandela: "#986e50",
+      chavez: "#d0a47e",
+    }[fighter.id] || "#94a9ad";
+
+    ctx.fillStyle = shade;
+    ctx.fillRect(-18, -62, 3, 32);
+    ctx.fillRect(15, -60, 3, 29);
+    ctx.fillRect(-12, -28, 4, 22);
+    ctx.fillRect(8, -28, 4, 22);
+    ctx.fillStyle = light;
+    ctx.fillRect(-16, -60, 2, 27);
+    ctx.fillRect(13, -58, 2, 24);
+    ctx.fillStyle = trimLight;
+    ctx.fillRect(-17, -7, 12, 2);
+    ctx.fillRect(4, -7, 12, 2);
+    ctx.fillRect(-13, -24, 2, 8);
+    ctx.fillRect(10, -24, 2, 8);
+
+    ctx.fillStyle = shadePixelColor(skin, 0.78);
+    ctx.fillRect(6, -81, 3, 12);
+    ctx.fillStyle = shadePixelColor(skin, 1.17);
+    ctx.fillRect(-7, -81, 2, 5);
+    ctx.fillRect(-1, -74, 2, 4);
+    ctx.fillStyle = "#f4e3cc";
+    ctx.fillRect(-6, -78, 2, 2);
+    ctx.fillRect(5, -78, 2, 2);
+    ctx.fillStyle = "#202634";
+    ctx.fillRect(-5, -77, 2, 2);
+    ctx.fillRect(6, -77, 2, 2);
+
+    if (fighter.id === "putin") {
+      ctx.fillStyle = "#4a3c36";
+      ctx.fillRect(-18, -47, 36, 4);
+      ctx.fillStyle = "#b8a98c";
+      ctx.fillRect(-3, -47, 6, 4);
+      ctx.fillStyle = "#f8f2df";
+      ctx.fillRect(-15, -60, 2, 17);
+      ctx.fillRect(13, -59, 2, 16);
+    } else if (fighter.id === "queen-elizabeth") {
+      ctx.fillStyle = "#f0d57e";
+      ctx.fillRect(-17, -55, 3, 21);
+      ctx.fillRect(14, -55, 3, 21);
+      ctx.fillRect(-2, -60, 4, 4);
+    } else if (fighter.id === "gandhi") {
+      ctx.fillStyle = "#f2eee2";
+      ctx.fillRect(-17, -59, 3, 24);
+      ctx.fillRect(14, -59, 3, 24);
+    } else if (fighter.id === "bolsonaro") {
+      ctx.fillStyle = "#f5f0e2";
+      ctx.fillRect(-17, -56, 3, 19);
+      ctx.fillRect(14, -55, 3, 18);
+      ctx.fillStyle = "#278f59";
+      ctx.fillRect(-13, -33, 5, 3);
+      ctx.fillRect(8, -33, 5, 3);
+    } else {
+      ctx.fillStyle = shadePixelColor(fighter.color, 0.72);
+      ctx.beginPath();
+      ctx.moveTo(-17, -61);
+      ctx.lineTo(-7, -57);
+      ctx.lineTo(-2, -48);
+      ctx.lineTo(-10, -43);
+      ctx.closePath();
+      ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(17, -61);
+      ctx.lineTo(7, -57);
+      ctx.lineTo(2, -48);
+      ctx.lineTo(10, -43);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = "#f2eee2";
+      ctx.fillRect(-5, -60, 10, 4);
+      ctx.fillStyle = shadePixelColor(fighter.trim, 0.85);
+      ctx.fillRect(-1, -37, 2, 2);
+      ctx.fillRect(-1, -32, 2, 2);
+    }
+
+    ctx.fillStyle = "rgba(255, 255, 255, 0.22)";
+    ctx.fillRect(-20, -64, 5, 2);
+    ctx.fillRect(15, -63, 5, 2);
+  }
+
   function drawPixelKim() {
     const block = (x, y, width, height, color) => {
       ctx.fillStyle = color;
@@ -1888,6 +1994,7 @@
     }
     drawBackground();
     drawFloor();
+    drawArenaLighting();
     if (
       gameState === "finish"
       && (winnerFighter?.id === "gandhi" || winnerFighter?.id === "mandela")
@@ -1981,6 +2088,15 @@
     else if (arena === "amazon") drawAmazonBackdrop();
     else drawTrainingGymBackdrop();
     if (burnt) drawBurntBackdrop();
+  }
+
+  function drawArenaLighting() {
+    const glow = ctx.createRadialGradient(WIDTH / 2, FLOOR - 92, 48, WIDTH / 2, FLOOR - 92, 490);
+    glow.addColorStop(0, "rgba(255, 224, 169, 0.10)");
+    glow.addColorStop(0.58, "rgba(255, 207, 165, 0.035)");
+    glow.addColorStop(1, "rgba(8, 12, 24, 0.28)");
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
   }
 
   function drawBurntBackdrop() {
@@ -2180,6 +2296,20 @@
     ctx.fillRect(0, FLOOR, WIDTH, 5);
     ctx.fillStyle = "rgba(255, 255, 255, 0.12)";
     ctx.fillRect(0, FLOOR + 18, WIDTH, 2);
+    ctx.save();
+    ctx.strokeStyle = "rgba(231, 220, 198, 0.075)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let x = -WIDTH; x <= WIDTH * 2; x += 120) {
+      ctx.moveTo(WIDTH / 2, FLOOR + 4);
+      ctx.lineTo(x, HEIGHT);
+    }
+    for (let y = FLOOR + 30; y < HEIGHT; y += 34) {
+      ctx.moveTo(0, y);
+      ctx.lineTo(WIDTH, y);
+    }
+    ctx.stroke();
+    ctx.restore();
   }
 
   function drawFighterAction(fighter) {
@@ -2333,6 +2463,7 @@
 
     if (fighter.id === "bolsonaro") {
       drawPixelBolsonaro();
+      drawPixelFinish(fighter);
       drawFighterAction(fighter);
       ctx.restore();
       return;
@@ -2340,6 +2471,7 @@
 
     if (fighter.id === "lula") {
       drawPixelLula();
+      drawPixelFinish(fighter);
       drawFighterAction(fighter);
       ctx.restore();
       if (fighter.frozenTimer > 0) drawFreezeStars(x, y);
@@ -2348,6 +2480,7 @@
 
     if (fighter.id === "obama") {
       drawPixelObama();
+      drawPixelFinish(fighter);
       drawFighterAction(fighter);
       ctx.restore();
       if (fighter.frozenTimer > 0) drawFreezeStars(x, y);
@@ -2356,6 +2489,7 @@
 
     if (fighter.id === "putin") {
       drawPixelPutin();
+      drawPixelFinish(fighter);
       drawFighterAction(fighter);
       ctx.restore();
       if (fighter.knockedDown) {
@@ -2369,6 +2503,7 @@
 
     if (fighter.id === "getulio") {
       drawPixelGetulio();
+      drawPixelFinish(fighter);
       drawFighterAction(fighter);
       ctx.restore();
       return;
@@ -2376,6 +2511,7 @@
 
     if (fighter.id === "queen-elizabeth") {
       drawPixelQueen();
+      drawPixelFinish(fighter);
       drawFighterAction(fighter);
       ctx.restore();
       return;
@@ -2383,6 +2519,7 @@
 
     if (fighter.id === "gandhi") {
       drawPixelGandhi();
+      drawPixelFinish(fighter);
       drawFighterAction(fighter);
       ctx.restore();
       return;
@@ -2390,6 +2527,7 @@
 
     if (fighter.id === "churchill") {
       drawPixelChurchill();
+      drawPixelFinish(fighter);
       drawFighterAction(fighter);
       ctx.restore();
       return;
@@ -2397,6 +2535,7 @@
 
     if (fighter.id === "mandela") {
       drawPixelMandela();
+      drawPixelFinish(fighter);
       drawFighterAction(fighter);
       ctx.restore();
       return;
@@ -2404,6 +2543,7 @@
 
     if (fighter.id === "chavez") {
       drawPixelChavez();
+      drawPixelFinish(fighter);
       drawFighterAction(fighter);
       ctx.restore();
       return;
@@ -2411,6 +2551,7 @@
 
     if (fighter.id === "jk") {
       drawPixelJK();
+      drawPixelFinish(fighter);
       drawFighterAction(fighter);
       ctx.restore();
       return;
@@ -2418,6 +2559,7 @@
 
     if (fighter.id === "kim") {
       drawPixelKim();
+      drawPixelFinish(fighter);
       drawFighterAction(fighter);
       ctx.restore();
       return;
@@ -2425,6 +2567,7 @@
 
     if (fighter.id === "trump") {
       drawPixelTrump(fighter);
+      drawPixelFinish(fighter);
       ctx.restore();
       if (fighter.frozenTimer > 0 && !fighter.knockedDown) drawFreezeStars(x, y);
       return;

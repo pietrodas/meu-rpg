@@ -21,7 +21,9 @@ cenário com bomba cenográfica, praça dos Três Poderes e floresta Amazônica.
 O elenco disponível é Kim Jong-un, Trump, Bolsonaro, Lula, Obama, Putin, Getúlio
 Vargas, JK, Rainha Elizabeth, Mahatma Gandhi, Winston Churchill, Nelson Mandela e Hugo
 Chávez, além do alvo de treino como adversário.
-Cada personagem tem pixel art original e seus golpes/finalizações cômicos aprovados.
+Cada personagem tem pixel art original com sombreamento em camadas, detalhes de
+rosto e roupa e iluminação de arena. Os golpes e finalizações cômicos seguem o
+conteúdo aprovado.
 Os combates são cartunescos e sem ferimentos gráficos.
 
 Há interações de entrada especiais entre Kim e Trump, Lula e Trump, Lula e Bolsonaro,
